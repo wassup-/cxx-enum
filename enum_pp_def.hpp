@@ -152,7 +152,7 @@ namespace fp {
         }                                                                                   \
                                                                                             \
         template<typename V, std::size_t... Is >                                            \
-        constexpr static my_1st_enum parse_impl(V val, ::fp::indices<Is...>) {              \
+        constexpr static enum_type parse_impl(V val, ::fp::indices<Is...>) {              \
             using std::get;                                                                 \
             return (::fp::enum_helper<enum_type>::parse(val, get<Is>(_entries)...));        \
         }                                                                                   \
