@@ -21,7 +21,7 @@ namespace fp {
             return _name;
         }
 
-        constexpr char const * what() const noexcept {
+        char const * what() const noexcept override {
             return "invalid entry name for Enum";
         }
     };
@@ -39,7 +39,7 @@ namespace fp {
             return _value;
         }
 
-        constexpr char const * what() const noexcept {
+        char const * what() const noexcept override {
             return "invalid entry value for Enum";
         }
     };
@@ -57,7 +57,7 @@ namespace fp {
             return _value;
         }
 
-        constexpr char const * what() const noexcept {
+        char const * what() const noexcept override {
             return "invalid value for Enum";
         }
     };
@@ -154,6 +154,13 @@ namespace fp {
          */
         template<typename T, typename = typename std::enable_if<std::is_integral<T>::value>::type>
         constexpr static bool try_parse(T, enum_type &);
+
+        /**
+         * Checks whether or not an integral value is a valid value for Enum
+         * @param value value to be checked
+        */
+        template<typename T, typename = typename std::enable_if<std::is_integral<T>::value>::type>
+        constexpr static bool is_valid(T);
     };
 }
 
