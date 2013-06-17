@@ -152,9 +152,15 @@ namespace fp {
         }                                                                                   \
                                                                                             \
         template<typename V, std::size_t... Is >                                            \
-        constexpr static enum_type parse_impl(V val, ::fp::indices<Is...>) {              \
+        constexpr static enum_type parse_impl(V val, ::fp::indices<Is...>) {                \
             using std::get;                                                                 \
             return (::fp::enum_helper<enum_type>::parse(val, get<Is>(_entries)...));        \
+        }                                                                                   \
+                                                                                            \
+        template<typename V, std::size_t... Is >                                            \
+        constexpr static bool is_valid_impl(V val, ::fp::indices<Is...>) {                  \
+            using std::get;                                                                 \
+            return (::fp::enum_helper<enum_type>::is_valid_entry(val, get<Is>(_entries)...)); \
         }                                                                                   \
     public:                                                                                 \
         constexpr enum_descriptor() = default;                                              \
@@ -197,6 +203,12 @@ namespace fp {
                 typename = typename std::enable_if<std::is_integral<T>::value>::type>       \
         constexpr static enum_type parse(T value){                                          \
             return parse_impl(value, ::fp::build_indices<Size>());                          \
+        }                                                                                   \
+                                                                                            \
+        template<typename T,                                                                \
+                typename = typename std::enable_if<std::is_integral<T>::value>::type>       \
+        constexpr static bool is_valid(T value){                                            \
+            return is_valid_impl(value, ::fp::build_indices<Size>());                       \
         }                                                                                   \
     };                                                                                      \
     template<>                                                                              \
