@@ -158,6 +158,7 @@ namespace fp {
         /**
          * Checks whether or not an integral value is a valid value for Enum
          * @param value value to be checked
+         * @return whether or not value is a valid value for Enum
         */
         template<typename T, typename = typename std::enable_if<std::is_integral<T>::value>::type>
         constexpr static bool is_valid(T);
