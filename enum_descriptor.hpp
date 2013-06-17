@@ -100,8 +100,7 @@ namespace fp {
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
         using size_type = std::size_t;
     public:
-        // Prevent instantiation of this type
-        constexpr enum_descriptor() = delete;
+        constexpr enum_descriptor() = default;
 
         /**
          * Gets the name of Enum
