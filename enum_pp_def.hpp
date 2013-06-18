@@ -17,16 +17,6 @@ namespace fp {
     template<std::size_t... T>
     struct build_indices<0, T...> : indices<T...> { };
 
-    constexpr int ctstrcmp(char const * l, char const * r) {
-        return (l && r) ?
-                    ((*l == *r) ?
-                        ctstrcmp(l + 1, r + 1) 
-                        : ((*l < *r) ? -1 : 1))
-                    : (!l && !r) ? 
-                        0
-                        : (!l) ? -1 : 1;
-    }
-
     constexpr bool streq(char const * l, char const * r) {
         return (*l && *r) ? ((*l == *r) ? streq(l + 1, r + 1) : false) : (!(*l || *r));
     }
