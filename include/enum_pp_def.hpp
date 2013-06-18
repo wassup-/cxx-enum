@@ -4,7 +4,6 @@
 #include "fp_pp_seq_for_each.hpp"
 #include "enum_descriptor.hpp"
 
-#include <array>        // for std::array
 #include <cstddef>      // for std::size_t
 
 namespace fp {
