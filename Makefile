@@ -6,8 +6,8 @@ NM=nm
 AS=as
 
 # Compilers
-CC=/opt/gcc-4.8.1/bin/gcc
-CXX=/opt/gcc-4.8.1/bin/g++
+CC=gcc
+CXX=g++
 
 # Compiler flags
 LDFLAGS=
