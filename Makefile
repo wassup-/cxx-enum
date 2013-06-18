@@ -19,35 +19,32 @@ BINDIR=bin
 INCLUDEDIR=include
 SRCDIR=src
 
+# Helpers
 EMPTY:=
 SPACE:= $(EMPTY) $(EMPTY)
 
-FILES=		example.cpp
+FILES=example.cpp
 
 SOURCES=$(SRCDIR)/$(subst $(SPACE), $(SRCDIR)/,$(FILES))
 OBJECTS=$(subst .cpp,.o,$(BINDIR)/$(subst $(SPACE), $(BINDIR)/,$(FILES)))
-SRCTOBIN=$(subst .cpp,.o,$(subst $(SRCDIR),$(BINDIR),$(1)))
-BINTOSRC=$(subst .o,.cpp,$(subst $(BINDIR),$(SRCDIR),$(1)))
+SOURCE=$(subst .o,.cpp,$(subst $(BINDIR),$(SRCDIR),$(1)))
 
-EXECUTABLE:=example
+EXE_PREFIX=
+EXE_POSTFIX=
+EXE_BASE=cxx-enum
+EXECUTABLE=$(EXE_PREFIX)$(EXE_BASE)$(EXE_POSTFIX)
 
 # Stages
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(EXE_BASE)
 
-$(SOURCES):
+$(EXE_BASE): $(OBJECTS)
 	$(MKDIR) -p $(BINDIR)
-	$(CXX) $(CXXFLAGS) $@ -o $(call SRCTOBIN,$@)
-
-$(EXECUTABLE): $(OBJECTS)
-	$(MKDIR) -p $(BINDIR)
-	$(CXX) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CXX) $(LDFLAGS) $(OBJECTS) -o $(EXECUTABLE)
 
 $(OBJECTS):
 	$(MKDIR) -p $(BINDIR)
-	$(CXX) $(CXXFLAGS) $(call BINTOSRC,$@) -o $@
+	$(CXX) $(CXXFLAGS) $(call SOURCE,$@) -o $@
 
 clean:
-	rm -rf $(BINDIR)/*
 	rm -rf $(BINDIR)/
-	rm -rf $(EXECUTABLE)
