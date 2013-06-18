@@ -8,7 +8,7 @@ namespace ext {
 }
 
 int main(int argc, char ** argv) {
-    using descriptor_t = ext::enum_descriptor<ext::my_1st_enum>;
+    using descriptor_t = fp::DescriptorOf<ext::my_1st_enum>;
     descriptor_t descr;
     std::cout << descr.name() << ":" << std::endl;
     // constexpr evaluation

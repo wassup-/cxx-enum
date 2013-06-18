@@ -85,6 +85,19 @@ namespace fp {
         { return _name; }
     };
 
+    namespace detail {
+        template<typename T>
+        void get_descriptor_mapping(T &&);
+
+        template<typename, typename = void>
+        struct enum_descriptor_impl;
+
+        template<typename T>
+        struct enum_descriptor_impl<T, typename std::enable_if<!std::is_same<void, decltype(get_descriptor_mapping(std::declval<T&>()))>::value>::type> {
+            using type = decltype(get_descriptor_mapping(std::declval<T&>()));
+        };
+    }
+
     /**
      * Class template for enum descriptors
      * @param  Enum    type of enum
@@ -93,6 +106,7 @@ namespace fp {
     struct enum_descriptor {
     public:
         using enum_type = Enum;
+        using descriptor_type = typename detail::enum_descriptor_impl<Enum>::type;
         using entry_type = enum_entry<enum_type>;
         using this_type = enum_descriptor<enum_type>;
 
@@ -162,6 +176,9 @@ namespace fp {
         template<typename T, typename = typename std::enable_if<std::is_integral<T>::value>::type>
         constexpr static bool is_valid(T);
     };
+
+    template<typename Enum>
+    using DescriptorOf = typename detail::enum_descriptor_impl<Enum>::type;
 }
 
 #endif
