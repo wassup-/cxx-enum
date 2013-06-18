@@ -110,43 +110,36 @@ namespace fp {
     private:                                                                                    \
         constexpr static std::size_t Size = FP_PP_NUM_ARGS(__VA_ARGS__);                        \
                                                                                                 \
-        constexpr static std::array<entry_type, Size> const _entries                            \
+        constexpr static entry_type const _entries[]                                            \
         {                                                                                       \
-            {                                                                                   \
                 FP_PP_SEQ_FOR_EACH(FP_PP_ENUM_EXT_ENTRY, ENUM, __VA_ARGS__)                     \
-            }                                                                                   \
         };                                                                                      \
                                                                                                 \
         template<std::size_t... Is >                                                            \
         constexpr static char const * name_of_impl(enum_type v, ::fp::indices<Is...>) {         \
-            using std::get;                                                                     \
-            return ::fp::enum_helper<enum_type>::get_name(v, get<Is>(_entries)...);             \
+            return ::fp::enum_helper<enum_type>::get_name(v, _entries[Is]...);                  \
         }                                                                                       \
                                                                                                 \
         template<std::size_t... Is >                                                            \
         constexpr static enum_type value_of_impl(char const * n, ::fp::indices<Is...>) {        \
-            using std::get;                                                                     \
-            return ::fp::enum_helper<enum_type>::get_value(n, get<Is>(_entries)...);            \
+            return ::fp::enum_helper<enum_type>::get_value(n, _entries[Is]...);                 \
         }                                                                                       \
                                                                                                 \
         template<typename V, std::size_t... Is >                                                \
         static bool try_parse_impl(V val, enum_type & res, ::fp::indices<Is...>) {              \
-            using std::get;                                                                     \
-            return (::fp::enum_helper<enum_type>::is_valid_entry(val, get<Is>(_entries)...)) ?  \
+            return (::fp::enum_helper<enum_type>::is_valid_entry(val, _entries[Is]...)) ?       \
                 ((res = static_cast<enum_type> (val)), true)                                    \
                 : false;                                                                        \
         }                                                                                       \
                                                                                                 \
         template<typename V, std::size_t... Is >                                                \
         constexpr static enum_type parse_impl(V val, ::fp::indices<Is...>) {                    \
-            using std::get;                                                                     \
-            return (::fp::enum_helper<enum_type>::parse(val, get<Is>(_entries)...));            \
+            return (::fp::enum_helper<enum_type>::parse(val, _entries[Is]...));                 \
         }                                                                                       \
                                                                                                 \
         template<typename V, std::size_t... Is >                                                \
         constexpr static bool is_valid_impl(V val, ::fp::indices<Is...>) {                      \
-            using std::get;                                                                     \
-            return (::fp::enum_helper<enum_type>::is_valid_entry(val, get<Is>(_entries)...));   \
+            return (::fp::enum_helper<enum_type>::is_valid_entry(val, _entries[Is]...));        \
         }                                                                                       \
     public:                                                                                     \
         constexpr ENUM##_descriptor() = default;                                                \
@@ -170,13 +163,11 @@ namespace fp {
         }                                                                                       \
                                                                                                 \
         constexpr static const_iterator begin() {                                               \
-            using std::get;                                                                     \
-            return const_iterator(&get<0>(_entries));                                           \
+            return const_iterator(&_entries[0]);                                                \
         }                                                                                       \
                                                                                                 \
         constexpr static const_iterator end() {                                                 \
-            using std::get;                                                                     \
-            return const_iterator(&get<(Size - 1)>(_entries) + 1);                              \
+            return const_iterator(&_entries[Size]);                                             \
         }                                                                                       \
                                                                                                 \
         template<typename T,                                                                    \
@@ -198,6 +189,6 @@ namespace fp {
         }                                                                                       \
     };                                                                                          \
     ENUM##_descriptor get_descriptor_mapping(ENUM);                                             \
-    constexpr std::array<::fp::enum_entry<ENUM>, FP_PP_NUM_ARGS(__VA_ARGS__)> const ENUM##_descriptor::_entries;
+    constexpr ::fp::enum_entry<ENUM> const ENUM##_descriptor::_entries[];
 
 #endif
