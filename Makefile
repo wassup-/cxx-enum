@@ -5,10 +5,6 @@ GREP=grep
 NM=nm
 AS=as
 
-# Compilers
-CC=gcc
-CXX=g++
-
 # Compiler flags
 LDFLAGS=
 CCFLAGS=-c -std=c++0x -Wall -O3
