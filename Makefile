@@ -1,29 +1,28 @@
 # Environment
-MKDIR=mkdir
-CP=cp
-GREP=grep
-NM=nm
-AS=as
+MKDIR 	= mkdir
+CP 		= cp
+GREP 	= grep
+NM 		= nm
+AS 		= as
 
 # Compiler flags
-LDFLAGS=
-CCFLAGS=-c -std=c++0x -Wall -O3
-CXXFLAGS=-c -std=c++0x -Wall -O3
+LDFLAGS 	=
+CCFLAGS 	= -c -std=c++0x -Wall -O3
+CXXFLAGS 	= -c -std=c++0x -Wall -O3
 
 # Directories
-BINDIR=bin
-INCLUDEDIR=include
-SRCDIR=src
+BINDIR 	 	= bin/
+SRCDIR 		= src/
 
 # Helpers
-EMPTY:=
-SPACE:= $(EMPTY) $(EMPTY)
+EMPTY :=
+SPACE := $(EMPTY) $(EMPTY)
 
-FILES=example.cpp
+FILES = example.cpp
 
-SOURCES=$(SRCDIR)/$(subst $(SPACE), $(SRCDIR)/,$(FILES))
-OBJECTS=$(subst .cpp,.o,$(BINDIR)/$(subst $(SPACE), $(BINDIR)/,$(FILES)))
-SOURCE=$(subst .o,.cpp,$(subst $(BINDIR),$(SRCDIR),$(1)))
+SOURCES = $(SRCDIR)$(subst $(SPACE), $(SRCDIR),$(FILES))
+OBJECTS = $(subst .cpp,.o,$(BINDIR)$(subst $(SPACE), $(BINDIR),$(FILES)))
+SOURCE 	= $(subst .o,.cpp,$(subst $(BINDIR),$(SRCDIR),$(1)))
 
 EXE_PREFIX=
 EXE_POSTFIX=
@@ -43,4 +42,4 @@ $(OBJECTS):
 	$(CXX) $(CXXFLAGS) $(call SOURCE,$@) -o $@
 
 clean:
-	rm -rf $(BINDIR)/
+	rm -rf $(BINDIR)
