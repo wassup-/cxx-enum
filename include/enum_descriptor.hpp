@@ -4,6 +4,7 @@
 #include <cstddef>      // for std::size_t
 #include <exception>    // for std::exception
 #include <iterator>     // for std::reverse_iterator
+#include <type_traits>  // for std::underlying_type
 
 namespace fp {
 
@@ -64,28 +65,32 @@ namespace fp {
 
     template<typename Enum>
     struct enum_entry {
+    public:
+        using enum_type = Enum;
+        using underlying_type = int;
     private:
         Enum _value;
         char const * const _name;
     public:
-        using type = Enum;
 
-        constexpr enum_entry(Enum value, char const * name)
+        constexpr enum_entry(Enum value, char const * name) noexcept
         : _value(value), _name(name)
         { }
 
-        constexpr enum_entry(enum_entry const & entry)
-        : _value(entry._value), _name(entry._name)
-        { }
+        constexpr enum_entry(enum_entry const &) noexcept = default;
 
-        constexpr Enum value()
+        constexpr Enum value() const
         { return _value; }
 
-        constexpr char const * name()
+        constexpr char const * name() const
         { return _name; }
+
+        constexpr explicit operator underlying_type() const
+        { return static_cast<underlying_type>(_value); }
     };
 
     namespace detail {
+
         template<typename T>
         void get_descriptor_mapping(T &&);
 
