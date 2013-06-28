@@ -4,62 +4,51 @@
 #include <cstddef>      // for std::size_t
 #include <exception>    // for std::exception
 #include <iterator>     // for std::reverse_iterator
+#include <stdexcept>    // for std::invalid_argument
 #include <type_traits>  // for std::underlying_type
 
 namespace fp {
 
     template<typename Enum>
-    struct InvalidEnumNameException : std::exception {
+    struct InvalidEnumNameException : std::invalid_argument {
     private:
-        using base_type = std::exception;
-        char const * _name;
+        using base_type = std::invalid_argument;
+        char const * const _name;
     public:
         constexpr InvalidEnumNameException(char const * name) noexcept
-        : _name(name)
+        : base_type("invalid entry name for Enum"), _name(name)
         { }
 
-        constexpr char const * name() const noexcept {
-            return _name;
-        }
-
-        char const * what() const noexcept override {
-            return "invalid entry name for Enum";
-        }
+        constexpr char const * name() const noexcept
+        { return _name; }
     };
 
     template<typename Enum>
-    struct InvalidEnumValueException : std::exception {
+    struct InvalidEnumValueException : std::invalid_argument {
     private:
-        Enum _value;
+        using base_type = std::invalid_argument;
+        Enum const _value;
     public:
         constexpr InvalidEnumValueException(Enum value) noexcept
-        : _value(value)
+        : base_type("invalid entry value for Enum"), _value(value)
         { }
 
-        constexpr Enum value() const noexcept {
-            return _value;
-        }
-
-        char const * what() const noexcept override {
-            return "invalid entry value for Enum";
-        }
+        constexpr Enum value() const noexcept
+        { return _value; }
     };
 
     template<typename Enum>
-    struct EnumParseException : std::exception {
+    struct EnumParseException : std::invalid_argument {
     private:
-        int _value;
+        using base_type = std::invalid_argument;
+        int const _value;
     public:
         constexpr EnumParseException(int value)
-        : _value(value)
+        : base_type("invalid value for Enum"), _value(value)
         { }
 
         constexpr int value() const noexcept {
             return _value;
-        }
-
-        char const * what() const noexcept override {
-            return "invalid value for Enum";
         }
     };
 

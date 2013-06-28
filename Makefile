@@ -8,7 +8,7 @@ AS 		= as
 # Compiler flags
 LDFLAGS 	=
 CCFLAGS 	= -c -std=c++0x -Wall -O3
-CXXFLAGS 	= -c -std=c++0x -Wall -O3
+CXXFLAGS 	= -c -std=c++11 -Wall -O3
 
 # Directories
 BINDIR 	 	= bin/
