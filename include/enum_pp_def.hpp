@@ -44,22 +44,38 @@ namespace fp {
 
         template<typename H, typename... T>
         constexpr static char const * get_name(Enum v, H const & head, T const &... tail) {
-            return (head.value() == v) ? head.name() : (sizeof...(T) > 0) ? get_name(v, tail...) : throw InvalidEnumValueException<Enum>(v);
+            return (head.value() == v) 
+                ? head.name() 
+                : (sizeof...(T) > 0)
+                    ? get_name(v, tail...) 
+                    : throw InvalidEnumValueException<Enum>(v);
         }
 
         template<typename H, typename... T>
         constexpr static Enum get_value(char const * n, H const & head, T const &... tail) {
-            return (streq(head.name(), n)) ? head.value() : (sizeof...(T) > 0) ? get_value(n, tail...) : throw InvalidEnumNameException<Enum>(n);
+            return (streq(head.name(), n))
+                ? head.value()
+                : (sizeof...(T) > 0) 
+                    ? get_value(n, tail...)
+                    : throw InvalidEnumNameException<Enum>(n);
         }
 
         template<typename V, typename H, typename... T>
         constexpr static bool is_valid_entry(V v, H const & head, T const &... tail) {
-            return ((int)head.value() == v) ? true : (sizeof...(T) > 0) ? is_valid_entry(v, tail...) : false;
+            return ((int)head.value() == v)
+            ? true
+            : (sizeof...(T) > 0)
+                ? is_valid_entry(v, tail...)
+                : false;
         }
 
         template<typename V, typename H, typename... T>
         constexpr static Enum parse(V v, H const & head, T const &... tail) {
-            return ((int)head.value() == v) ? head.value() : (sizeof...(T) > 0) ? parse(v, tail...) : throw EnumParseException<Enum>(v);
+            return ((int)head.value() == v)
+                ? head.value()
+                : (sizeof...(T) > 0)
+                    ? parse(v, tail...)
+                    : throw EnumParseException<Enum>(v);
         }
     };
 }
@@ -126,8 +142,8 @@ namespace fp {
                                                                                                 \
         template<typename V, std::size_t... Is >                                                \
         static bool try_parse_impl(V val, enum_type & res, ::fp::indices<Is...>) {              \
-            return (::fp::enum_helper<enum_type>::is_valid_entry(val, _entries[Is]...)) ?       \
-                ((res = static_cast<enum_type> (val)), true)                                    \
+            return (::fp::enum_helper<enum_type>::is_valid_entry(val, _entries[Is]...))         \
+                ? ((res = static_cast<enum_type> (val)), void(), true)                          \
                 : false;                                                                        \
         }                                                                                       \
                                                                                                 \

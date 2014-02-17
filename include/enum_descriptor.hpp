@@ -81,7 +81,7 @@ namespace fp {
     namespace detail {
 
         template<typename T>
-        void get_descriptor_mapping(T &&);
+        void get_descriptor_mapping(T&&);
 
         template<typename, typename = void>
         struct enum_descriptor_impl;
